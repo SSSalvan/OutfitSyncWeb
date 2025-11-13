@@ -1,6 +1,38 @@
+// File: app.js (RECODE DENGAN PERSISTENCE 'SESSION')
+
 // --- Impor Service Firebase ---
-import { auth } from './firebase-init.js';
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { auth, db, storage } from './firebase-init.js';
+import { 
+  onAuthStateChanged, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut,
+  sendEmailVerification,
+  GoogleAuthProvider,
+  signInWithPopup,
+  // --- PERUBAHAN DI SINI ---
+  setPersistence,
+  browserSessionPersistence // <-- Impor mode 'session'
+  // --- AKHIR PERUBAHAN ---
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  doc, 
+  getDoc,
+  setDoc,
+  updateDoc,
+  collection,
+  query,
+  where,
+  orderBy,
+  limit,
+  onSnapshot,
+  getDocs 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  ref, 
+  getDownloadURL,
+  uploadBytes
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 // Impor fungsi 'loadUserData' dari folder utilitas kita
 import { loadUserData } from './utils/firestore.js';
 
@@ -58,9 +90,7 @@ function loadLayoutStyle(layoutName) {
   if (layoutName) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    // --- PERUBAHAN DI SINI ---
-    link.href = `page-style/${layoutName}.css`; // Diubah dari 'pages/'
-    // -------------------------
+    link.href = `page-style/${layoutName}.css`;
     document.head.appendChild(link);
     currentLayoutStyle = link;
   } else {
@@ -72,9 +102,7 @@ function loadPageStyle(pageName) {
   if (currentPageStyle) currentPageStyle.remove();
   const link = document.createElement('link');
   link.rel = 'stylesheet';
-  // --- PERUBAHAN DI SINI ---
-  link.href = `page-style/${pageName}.css`; // Diubah dari 'pages/'
-  // -------------------------
+  link.href = `page-style/${pageName}.css`;
   document.head.appendChild(link);
   currentPageStyle = link;
 }
@@ -183,11 +211,7 @@ async function initializePageEvents(pageName) {
 // --- TITIK MULAI APLIKASI (GATEKEEPER) ---
 async function initializeApp() {
   await loadHtml('components/sidebar.html', sidebarContainer);
-  
-  // --- PERUBAHAN DI SINI ---
-  loadPersistentStyle('page-style/sidebar.css'); // Diubah dari 'components/'
-  // -------------------------
-
+  loadPersistentStyle('page-style/sidebar.css');
   loadScript('components/sidebar.js'); 
 
   window.addEventListener('navigate', (event) => {
@@ -196,6 +220,16 @@ async function initializeApp() {
       window.loadPage(pageName);
     }
   });
+
+  // --- PERUBAHAN DI SINI ---
+  // Atur mode persistensi SEBELUM onAuthStateChanged dipanggil
+  try {
+    await setPersistence(auth, browserSessionPersistence);
+    console.log("Firebase persistence set to 'session'.");
+  } catch (error) {
+    console.error("Gagal mengatur Firebase persistence:", error);
+  }
+  // --- AKHIR PERUBAHAN ---
 
   onAuthStateChanged(auth, async (user) => {
     currentCleanupFunction(); 

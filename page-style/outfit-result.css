@@ -1,0 +1,121 @@
+/* File: page-style/outfit-result.css (BARU) */
+
+.outfit-result-page {
+  padding: 40px;
+  padding-left: var(--sidebar-width, 140px); /* Beri ruang untuk sidebar */
+  min-height: 100vh;
+  background-color: #f9f6f2;
+}
+
+.result-back-btn {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  margin-bottom: 2rem;
+}
+.result-back-btn img {
+  width: 20px;
+  transform: rotate(180deg);
+}
+
+.result-content {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Kolom Kiri (Daftar) */
+.result-left h4 {
+  font-size: 1.5rem;
+  color: #000;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+#result-status-text {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.result-item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.result-item-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.result-item-card img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+}
+.item-info {
+  display: flex;
+  flex-direction: column;
+}
+.item-style {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+}
+.item-category {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+#result-btn-save {
+  max-width: 300px; /* Sesuaikan lebar tombol */
+}
+
+/* Kolom Kanan (Visual) */
+.result-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.outfit-canvas {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1 / 1;
+  /* (Kita bisa tambahkan gambar-gambar di sini 
+     menggunakan 'position: absolute') */
+}
+
+/* Style untuk gambar di dalam canvas */
+.outfit-canvas img {
+  position: absolute;
+  max-width: 50%; /* Contoh ukuran */
+  height: auto;
+  
+  /* Contoh posisi (perlu disesuaikan) */
+  /* Ini contoh, JS harusnya mengatur ini */
+  &:nth-child(1) { top: 0; left: 25%; } /* Top */
+  &:nth-child(2) { top: 40%; left: 25%; } /* Bottom */
+  &:nth-child(3) { top: 70%; left: 10%; } /* Shoes */
+  &:nth-child(4) { top: 10%; left: 70%; } /* Accessory */
+  &:nth-child(5) { top: 40%; left: 70%; } /* Bag */
+}

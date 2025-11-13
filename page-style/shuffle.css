@@ -1,17 +1,24 @@
+/* File: page-style/shuffle.css (RECODE - Sesuai Figma Carousel) */
+
 .shuffle-page {
   padding-left: var(--sidebar-width, 140px);
   padding-top: 150px; /* Jarak dari header logo */
   padding-right: 40px;
-  padding-bottom: 100px;
+  /* Padding bawah ekstra untuk ruang tombol 'Create' */
+  padding-bottom: 120px; 
   max-width: 1000px;
   margin: 0 auto;
 }
 
-.shuffle-controls {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
+.shuffle-header {
   margin-bottom: 2rem;
+}
+
+.shuffle-header h3 {
+  font-size: 1.8rem;
+  color: #000;
+  font-weight: 600;
+  text-align: center;
 }
 
 /* Section untuk setiap carousel */
@@ -37,29 +44,11 @@
   scroll-snap-type: x mandatory;
 }
 
-/* Ukuran kartu yang berbeda (Meniru Adapter Berbeda) */
-.carousel-row .item-card {
-  flex-shrink: 0; /* Agar kartu tidak penyok */
-  scroll-snap-align: center; /* Kartu akan berhenti di tengah */
-  
-  /* Ukuran default (Small) */
-  width: 160px;
-  height: 160px;
-}
-
-.carousel-row.large .item-card {
-  /* Ukuran Large (untuk Tops & Bottoms) */
-  width: 240px;
-  height: 240px;
-}
-
-/* (Gunakan style .item-card dan .like-btn dari wardrobe.css) */
-/* Pastikan .item-card dan .like-btn ada di file CSS global
-   atau copy-paste style-nya dari wardrobe.css ke sini. */
+/* Style Kartu (Sama seperti wardrobe) */
 .item-card {
   position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
+  flex-shrink: 0; /* Agar kartu tidak penyok */
+  scroll-snap-align: center; /* Kartu akan berhenti di tengah */
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
@@ -67,10 +56,40 @@
   transition: all 0.2s ease;
 }
 
-.item-card img {
+.item-card-image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+.item-card-image-container img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.item-card-info {
+  padding: 0.6rem 0.75rem; 
+  text-align: center;
+}
+.item-style-text {
+  font-size: 0.85rem; 
+  font-weight: 500;
+  color: #555; 
+}
+/* Sembunyikan tombol 'like' di halaman shuffle */
+.item-card .like-btn {
+  display: none;
+}
+
+
+/* Ukuran kartu yang berbeda (Meniru Adapter Berbeda) */
+.carousel-row .item-card {
+  /* Ukuran default (Small) */
+  width: 160px;
+}
+
+.carousel-row.large .item-card {
+  /* Ukuran Large (untuk Tops & Bottoms) */
+  width: 240px;
 }
 
 .empty-list-message {
@@ -79,4 +98,41 @@
   font-size: 1rem;
   padding: 1rem;
   text-align: center;
+}
+
+/* Tombol 'Create outfit' di bawah */
+.shuffle-footer {
+  position: fixed;
+  bottom: 0;
+  left: var(--sidebar-width, 140px); /* Mulai setelah sidebar */
+  right: 0;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem; /* Jarak antara tombol Create dan Shuffle */
+  background: rgba(249, 246, 242, 0.8); /* Background beige transparan */
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+
+#shuffle-btn-create {
+  max-width: 300px;
+}
+
+.shuffle-icon-btn {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.shuffle-icon-btn img {
+  width: 24px;
+  height: 24px;
 }

@@ -1,4 +1,4 @@
-/* File: style.css */
+/* File: page-style/main.css (RECODE) */
 
 /*
 Colors
@@ -23,7 +23,12 @@ body {
   font-family: "Poppins", sans-serif;
   background-color: #f9f6f2;
   color: #ffc0cb;
-  overflow-x: hidden; /* Mencegah horizontal scroll, tapi membolehkan vertical scroll */
+
+  /* --- PERBAIKAN DI SINI --- */
+  /* 'overflow: hidden;' mematikan SEMUA scroll.
+     Kita ganti ke 'overflow-x: hidden;' agar carousel bisa scroll. */
+  overflow-x: hidden; 
+  /* --- AKHIR PERBAIKAN --- */
 }
 
 /* ---------- REUSABLE BUTTON STYLE (Final Look) ---------- */

@@ -1,3 +1,5 @@
+/* File: page-style/wardrobe.css (RECODE - Penyesuaian Shadow Atas) */
+
 .wardrobe-page {
   padding-left: var(--sidebar-width, 140px);
   padding-top: 150px; /* Jarak dari header logo */
@@ -7,82 +9,70 @@
   margin: 0 auto;
 }
 
+/* Header 'My Wardrobe' dihapus dari HTML, jadi tidak perlu di-style */
 .wardrobe-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
+  display: none; 
 }
 
-.wardrobe-header h3 {
-  font-size: 1.8rem;
-  color: #000;
-  font-weight: 600;
-}
-
-.btn-likes {
-  background-color: #f3dbdc;
-  color: #000;
-  border: none;
-  padding: 0.8rem 1.2rem;
-  border-radius: 20px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.btn-likes:hover {
-  background-color: #e3b9ba;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-/* Filter Chips */
+/* === PERUBAHAN DI SINI: FILTER CHIPS === */
 .chip-group {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
   justify-content: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem; /* Beri jarak lebih */
 }
 
 .chip {
-  padding: 0.6rem 1.2rem;
+  padding: 0.7rem 1.4rem; /* Sesuaikan padding */
   font-size: 0.9rem;
   font-weight: 500;
   color: #333;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 20px;
+  background-color: #ffffff; /* Latar belakang putih */
+  border: 1px solid #eee; /* Border sangat tipis */
+  border-radius: 999px; /* Membuatnya jadi pill/kapsul */
   cursor: pointer;
   transition: all 0.2s ease;
+  
+  /* --- SHADOW YANG ANDA MINTA --- */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
 }
 
 .chip:hover {
-  background-color: #f0f0f0;
+  background-color: #f7f7f7;
+  transform: translateY(-2px); /* Efek mengambang saat di-hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 .chip.active {
-  background-color: var(--panel, #f4d8da); /* Warna pink dari sidebar */
+  background-color: var(--panel, #f4d8da); /* Warna pink */
   color: #000;
   border-color: var(--panel, #f4d8da);
+  /* Shadow lebih kuat saat aktif */
+  box-shadow: 0 6px 15px rgba(233, 162, 164, 0.3); 
 }
+/* === AKHIR PERUBAHAN CHIPS === */
 
-/* Grid Item (Meniru GridLayoutManager(2)) */
+
+/* Grid Item (Disesuaikan dengan Figma) */
 .item-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 1.5rem;
+  justify-content: center;
 }
 
-/* Style untuk card item (dipakai juga oleh 'shuffle') */
+/* Style Kartu Item */
 .item-card {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1; /* Membuat kartu jadi kotak */
+  max-width: 180px; 
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
-  overflow: hidden;
   transition: all 0.2s ease;
+  overflow: hidden; 
+  margin: 0 auto; 
 }
 
 .item-card:hover {
@@ -90,7 +80,14 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-.item-card img {
+.item-card-image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1; 
+  overflow: hidden;
+}
+
+.item-card-image-container img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -99,11 +96,11 @@
 /* Tombol Like di atas kartu */
 .like-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 36px;
-  height: 36px;
-  background-color: rgba(255, 255, 255, 0.7);
+  top: 8px; 
+  right: 8px; 
+  width: 32px; 
+  height: 32px; 
+  background-color: rgba(255, 255, 255, 0.8); 
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -111,19 +108,35 @@
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(4px);
+  z-index: 10; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
 
 .like-btn svg {
-  width: 20px;
-  height: 20px;
+  width: 18px; 
+  height: 18px; 
   stroke: #000;
   stroke-width: 2;
   fill: none;
+  transition: fill 0.2s ease, stroke 0.2s ease;
 }
 
 .like-btn.liked svg {
-  fill: #ff0000; /* Warna merah saat di-like */
+  fill: #ff0000;
   stroke: #ff0000;
+}
+
+/* Style untuk teks di bawah gambar */
+.item-card-info {
+  padding: 0.6rem 0.75rem; 
+  text-align: center;
+  background-color: #fff;
+}
+
+.item-style-text {
+  font-size: 0.85rem; 
+  font-weight: 500;
+  color: #555; 
 }
 
 .empty-list-message {
@@ -132,4 +145,5 @@
   font-size: 1rem;
   padding: 2rem;
   text-align: center;
+  grid-column: 1 / -1; 
 }

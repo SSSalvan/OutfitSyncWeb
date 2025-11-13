@@ -1,6 +1,15 @@
+// File: utils/renderer.js (RECODE)
+
+/**
+ * Membuat HTML untuk satu kartu item.
+ * (DIPERBARUI untuk menyertakan teks style)
+ */
 export function createItemCardHTML(item) {
   const imageUrl = item.imageUrl || 'images/logo-only.png';
   const isLiked = item.isLiked || false;
+  
+  // Ambil data 'style' dari item, default 'N/A' jika tidak ada
+  const styleText = item.style || 'N/A'; 
   
   const heartSVG = `
     <svg viewBox="0 0 24 24">
@@ -10,16 +19,24 @@ export function createItemCardHTML(item) {
   
   return `
     <div class="item-card" data-id="${item.id}">
-      <img src="${imageUrl}" alt="${item.name || 'Item'}">
-      <button class="like-btn ${isLiked ? 'liked' : ''}" data-id="${item.id}" data-liked="${isLiked}">
-        ${heartSVG}
-      </button>
+      <div class="item-card-image-container">
+        <img src="${imageUrl}" alt="${item.name || 'Item'}">
+        <button class="like-btn ${isLiked ? 'liked' : ''}" data-id="${item.id}" data-liked="${isLiked}">
+          ${heartSVG}
+        </button>
+      </div>
+      
+      <div class="item-card-info">
+        <span class="item-style-text">${styleText}</span>
+      </div>
+      
     </div>
   `;
 }
 
 /**
  * Merender daftar item ke kontainer di halaman.
+ * (Fungsi ini tidak diubah)
  */
 export function renderItemsToContainer(items, containerId, emptyMsgId) {
   const container = document.getElementById(containerId);

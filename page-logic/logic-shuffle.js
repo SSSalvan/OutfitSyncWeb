@@ -1,3 +1,5 @@
+// File: page-logic/logic-shuffle.js (RECODE - Sesuai Figma Carousel)
+
 import { db, auth } from '../firebase-init.js';
 import { 
   collection, 
@@ -5,10 +7,14 @@ import {
   where, 
   getDocs 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { renderItemsToContainer } from '../utils/renderer.js';
+// Impor renderer untuk membuat kartu
+import { renderItemsToContainer } from '../utils/renderer.js'; 
 
 let shuffleLists = {}; // Cache
 
+/**
+ * Memuat data dan memfilternya ke 5 carousel
+ */
 async function loadShuffleData(userId) {
   const q = query(
     collection(db, "wardrobeItems"),
@@ -19,12 +25,14 @@ async function loadShuffleData(userId) {
     const snapshot = await getDocs(q);
     const allItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
+    // Filter ke 5 list (meniru Kotlin)
     shuffleLists.accessories = allItems.filter(it => it.category && it.category.toLowerCase() === "accessory");
     shuffleLists.tops = allItems.filter(it => it.category && it.category.toLowerCase() === "top");
     shuffleLists.bottoms = allItems.filter(it => it.category && it.category.toLowerCase() === "bottom");
     shuffleLists.shoes = allItems.filter(it => it.category && (it.category.toLowerCase() === "shoes" || it.category.toLowerCase() === "footwear"));
     shuffleLists.bags = allItems.filter(it => it.category && it.category.toLowerCase() === "bag");
 
+    // Render ke 5 kontainer
     renderItemsToContainer(shuffleLists.accessories, 'accessories-container', 'accessories-empty');
     renderItemsToContainer(shuffleLists.tops, 'tops-container', 'tops-empty');
     renderItemsToContainer(shuffleLists.bottoms, 'bottoms-container', 'bottoms-empty');
@@ -36,6 +44,9 @@ async function loadShuffleData(userId) {
   }
 }
 
+/**
+ * Logika untuk tombol Shuffle (meniru Kotlin)
+ */
 function shuffleToRandomStyle() {
   const allItems = [
     ...(shuffleLists.accessories || []),
@@ -63,6 +74,7 @@ function shuffleToRandomStyle() {
       const randomItem = itemsWithStyle[Math.floor(Math.random() * itemsWithStyle.length)];
       const itemElement = container.querySelector(`.item-card[data-id="${randomItem.id}"]`);
       if (itemElement) {
+        // Scroll ke elemen
         itemElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
     }
@@ -75,7 +87,10 @@ function shuffleToRandomStyle() {
   scrollToStyle('bags-container', shuffleLists.bags, randomStyle);
 }
 
-function getShuffleOutfit() {
+/**
+ * Logika untuk tombol "Create Outfit"
+ */
+function createOutfitAndNavigate() {
   const getCenterItem = (containerId) => {
     const container = document.getElementById(containerId);
     if (!container) return null;
@@ -101,6 +116,7 @@ function getShuffleOutfit() {
     return (shuffleLists[category] || []).find(item => item.id === itemId) || null;
   };
 
+  // Kumpulkan outfit yang dipilih
   const outfit = {
     Accessory: getCenterItem('accessories-container'),
     Top: getCenterItem('tops-container'),
@@ -109,22 +125,29 @@ function getShuffleOutfit() {
     Bag: getCenterItem('bags-container')
   };
 
-  let outfitMessage = "Outfit Pilihan Anda:\n";
-  if(outfit.Accessory) outfitMessage += `Accessory: ${outfit.Accessory.name}\n`;
-  if(outfit.Top) outfitMessage += `Top: ${outfit.Top.name}\n`;
-  if(outfit.Bottom) outfitMessage += `Bottom: ${outfit.Bottom.name}\n`;
-  if(outfit.Shoes) outfitMessage += `Shoes: ${outfit.Shoes.name}\n`;
-  if(outfit.Bag) outfitMessage += `Bag: ${outfit.Bag.name}\n`;
-  alert(outfitMessage);
+  const finalOutfit = Object.fromEntries(
+    Object.entries(outfit).filter(([_, value]) => value != null)
+  );
+
+  // Simpan data outfit ke sessionStorage
+  sessionStorage.setItem('selectedOutfit', JSON.stringify(finalOutfit));
+
+  // Pindah ke halaman 'outfit-result'
+  window.loadPage('outfit-result');
 }
 
 
 export function initShufflePage() {
   const currentUser = auth.currentUser;
   if (currentUser) {
+    // 1. Muat 5 carousel
     loadShuffleData(currentUser.uid);
+
+    // 2. Tambahkan listener ke tombol "Shuffle"
     document.getElementById('shuffle-btn-shuffle').addEventListener('click', shuffleToRandomStyle);
-    document.getElementById('shuffle-btn-next').addEventListener('click', getShuffleOutfit);
+    
+    // 3. Tambahkan listener ke tombol "Create outfit"
+    document.getElementById('shuffle-btn-create').addEventListener('click', createOutfitAndNavigate);
   }
 }
 
